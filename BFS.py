@@ -28,11 +28,8 @@ def BreadthFistSearch( map, actualPos, visited, fronteirs ):
         Returns:
             map con el camino marcado.
     '''
-    print( '- actualPos:', actualPos)
     visited.append(actualPos)
     findFronteirs(actualPos, fronteirs, visited)
-    print('visited ', visited)
-    print('fronteirs ', fronteirs)
 
     return map
 
@@ -68,11 +65,11 @@ def findFronteirs ( actualNode, fronteirs, visited ):
     ogX = actualNode[0]
     ogY  = actualNode[1]
 
-    # Right
+    # Left
     X = ogX
-    Y = ogY + 1
+    Y = ogY - 1
     if (X,Y) not in visited:
-        pushFronteirs(fronteirs, X, Y, 'right')
+        pushFronteirs(fronteirs, X, Y, 'left')
 
     # Up
     X = ogX - 1 
@@ -80,11 +77,11 @@ def findFronteirs ( actualNode, fronteirs, visited ):
     if (X,Y) not in visited:
         pushFronteirs(fronteirs, X, Y, 'up')
 
-    # Left
+    # Right
     X = ogX
-    Y = ogY - 1
+    Y = ogY + 1
     if (X,Y) not in visited:
-        pushFronteirs(fronteirs, X, Y, 'left')
+        pushFronteirs(fronteirs, X, Y, 'right')
 
     # Down
     X = ogX + 1

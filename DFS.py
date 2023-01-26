@@ -66,11 +66,11 @@ def findFronteirs ( actualNode, fronteirs, visited ):
     ogX = actualNode[0]
     ogY  = actualNode[1]
 
-    # Right
+    # Left
     X = ogX
-    Y = ogY + 1
+    Y = ogY - 1
     if (X,Y) not in visited:
-        pushFronteirs(fronteirs, X, Y, 'right')
+        pushFronteirs(fronteirs, X, Y, 'left')
 
     # Up
     X = ogX - 1 
@@ -78,11 +78,11 @@ def findFronteirs ( actualNode, fronteirs, visited ):
     if (X,Y) not in visited:
         pushFronteirs(fronteirs, X, Y, 'up')
 
-    # Left
+    # Right
     X = ogX
-    Y = ogY - 1
+    Y = ogY + 1
     if (X,Y) not in visited:
-        pushFronteirs(fronteirs, X, Y, 'left')
+        pushFronteirs(fronteirs, X, Y, 'right')
 
     # Down
     X = ogX + 1
@@ -131,7 +131,7 @@ while map[actualPos[0]][actualPos[1]] != 'x':
     #print('value: ', map[actualPos[0]][actualPos[1]])
     #print('pos: ', actualPos)
 print('path', path1)
-print('invert: ',path2)
+# print('invert: ', path2)
 
 for i in path1:
     for j in path2:
@@ -141,10 +141,11 @@ for i in path1:
 
 #Change values of the original matrix 
 for i in range(len(path)):
-    coords =path[i]
+    coords = path[i]
     x = coords[0]
     y = coords[1]
     map[x][y] = 'c'
 
-print(map,'map')
-print('path', path)
+for i in map:
+    print(i)
+# print('path', path)
