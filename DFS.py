@@ -10,7 +10,7 @@ map = [['*',1,0,0,1],
 
 def find_in_list_of_list( mylist, char ):
     """
-        Tomado de: Stack Over Flow
+        Tomado de: Stack Overflow
     """
     for sub_list in mylist:
         if char in sub_list:
@@ -28,30 +28,27 @@ def DepthFistSearch( map, actualPos, visited, fronteirs ):
         Returns:
             map con el camino marcado.
     '''
-    print( 'actualPos: ', actualPos)
     visited.append(actualPos)
-    print( 'visited: ', visited)
     findFronteirs(actualPos, fronteirs, visited)
-
-    print('fronteirs: ',fronteirs)
 
     return map
 
-def pushFronteirs ( stack, X, Y ):
+def pushFronteirs ( stack, X, Y, direc ):
     """
         Función para verificar que los índex se encuentren dentro de los límites
         del tamaño del array.
         Parámetros:
             stack: Fronteras
-            X: Posición X
-            Y: Posición Y
+            X: Número de lista
+            Y: Posición en lista de lista
         Returns:
             stack
     """
     limit = len(map)
     if ( X > -1 and X < limit ) and ( Y > -1 and Y < limit ):
-        if map[X][Y] != 0:
-            stack.append((X,Y))
+        if (X,Y) not in stack:
+            if map[X][Y] != 0:
+                stack.append((X,Y))
 
     return stack
 
@@ -68,31 +65,29 @@ def findFronteirs ( actualNode, fronteirs, visited ):
     ogX = actualNode[0]
     ogY  = actualNode[1]
 
-
-    # Down
+    # Right
     X = ogX
     Y = ogY + 1
     if (X,Y) not in visited:
-        pushFronteirs(fronteirs, X, Y)
-
-    # Right
-    X = ogX + 1
-    Y = ogY
-    if (X,Y) not in visited:
-        pushFronteirs(fronteirs, X, Y)
+        pushFronteirs(fronteirs, X, Y, 'right')
 
     # Up
+    X = ogX - 1 
+    Y = ogY
+    if (X,Y) not in visited:
+        pushFronteirs(fronteirs, X, Y, 'up')
+
+    # Left
     X = ogX
     Y = ogY - 1
     if (X,Y) not in visited:
-        pushFronteirs(fronteirs, X, Y)
+        pushFronteirs(fronteirs, X, Y, 'left')
 
-    # Left
-    X = ogX - 1
+    # Down
+    X = ogX + 1
     Y = ogY
     if (X,Y) not in visited:
-        pushFronteirs(fronteirs, X, Y)
-
+        pushFronteirs(fronteirs, X, Y, 'down')
 
     return fronteirs
         
@@ -100,6 +95,7 @@ def findFronteirs ( actualNode, fronteirs, visited ):
 startPosition = find_in_list_of_list(map, '*')
 visited = []
 fronteirs = []
+i=0
 
 actualPos = startPosition
 
@@ -107,6 +103,6 @@ while map[actualPos[0]][actualPos[1]] != 'x':
     DepthFistSearch(map, actualPos, visited, fronteirs)
     if len(fronteirs) > 0:
         actualPos = fronteirs.pop()
-
-    print('finalPos: ', actualPos)
+    
     print('value: ', map[actualPos[0]][actualPos[1]])
+    print('pos: ', actualPos)
