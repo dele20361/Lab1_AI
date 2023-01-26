@@ -1,3 +1,4 @@
+import numpy as np 
 from inspect import stack
 from cv2 import findContours
 #import pandas as pd
@@ -90,12 +91,32 @@ def findFronteirs ( actualNode, fronteirs, visited ):
         pushFronteirs(fronteirs, X, Y, 'down')
 
     return fronteirs
-        
+
+def invert (map):
+    startPosition = find_in_list_of_list(map, 'x')
+    visited = []
+    fronteirs = []
+    rode = []
+    i=0
+
+    actualPos = startPosition
+
+    while map[actualPos[0]][actualPos[1]] != '*':
+        DepthFistSearch(map, actualPos, visited, fronteirs)
+        if len(fronteirs) > 0:
+            actualPos = fronteirs.pop()
+
+            rode.append(actualPos)
+    return rode
+
+
 
 startPosition = find_in_list_of_list(map, '*')
 visited = []
 fronteirs = []
-path = []
+path=[]
+path1 = []
+path2 = invert(map)
 i=0
 
 actualPos = startPosition
@@ -105,17 +126,24 @@ while map[actualPos[0]][actualPos[1]] != 'x':
     if len(fronteirs) > 0:
         actualPos = fronteirs.pop()
 
-        path.append(actualPos)
+        path1.append(actualPos)
     
     #print('value: ', map[actualPos[0]][actualPos[1]])
     #print('pos: ', actualPos)
+print('path', path1)
+print('invert: ',path2)
 
+for i in path1:
+    for j in path2:
+        if i==j:
+            path.append()
+            print (i,j)
 #Change values of the original matrix 
-for i in range(len(path)):
+'''for i in range(len(path)):
     coords =path[i]
     x = coords[0]
     y = coords[1]
     map[x][y] = 'c'
 
 print(map,'map')
-print('path', path)
+print('path', path)'''
