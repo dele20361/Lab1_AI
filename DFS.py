@@ -136,14 +136,15 @@ print('invert: ',path2)
 for i in path1:
     for j in path2:
         if i==j:
-            path.append()
-            print (i,j)
+            path.append(j)
+            #print (i,j)
+
 #Change values of the original matrix 
-'''for i in range(len(path)):
+for i in range(len(path)):
     coords =path[i]
     x = coords[0]
     y = coords[1]
     map[x][y] = 'c'
 
 print(map,'map')
-print('path', path)'''
+print('path', path)
