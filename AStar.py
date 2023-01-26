@@ -10,7 +10,7 @@ def find_in_list_of_list(mylist, char):
     '''
     Function that is used to get the index acording to an especific
     element
-        Recovered from: Stack Over flow 
+        Recovered from: Stack Overflow 
     '''
     for sub_list in mylist:
         if char in sub_list:
@@ -161,6 +161,6 @@ for i in range(len(rode)):
     coords =rode[i]
     x = coords[0]
     y = coords[1]
-    map[x][y] = 2
+    map[x][y] =  'c'
 
 print(map,'map')

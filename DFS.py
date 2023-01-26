@@ -1,6 +1,6 @@
 from inspect import stack
 from cv2 import findContours
-import pandas as pd
+#import pandas as pd
 
 map = [['*',1,0,0,1],
         [1,1,0,0,1],
@@ -95,6 +95,7 @@ def findFronteirs ( actualNode, fronteirs, visited ):
 startPosition = find_in_list_of_list(map, '*')
 visited = []
 fronteirs = []
+path = []
 i=0
 
 actualPos = startPosition
@@ -103,6 +104,18 @@ while map[actualPos[0]][actualPos[1]] != 'x':
     DepthFistSearch(map, actualPos, visited, fronteirs)
     if len(fronteirs) > 0:
         actualPos = fronteirs.pop()
+
+        path.append(actualPos)
     
-    print('value: ', map[actualPos[0]][actualPos[1]])
-    print('pos: ', actualPos)
+    #print('value: ', map[actualPos[0]][actualPos[1]])
+    #print('pos: ', actualPos)
+
+#Change values of the original matrix 
+for i in range(len(path)):
+    coords =path[i]
+    x = coords[0]
+    y = coords[1]
+    map[x][y] = 'c'
+
+print(map,'map')
+print('path', path)
