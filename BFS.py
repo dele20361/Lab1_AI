@@ -1,6 +1,6 @@
-from inspect import stack
-from cv2 import findContours
-import pandas as pd
+#from inspect import stack
+#from cv2 import findContours
+#import pandas as pd
 
 map = [['*',1,0,0,1],
         [1,1,0,0,1],
@@ -106,3 +106,4 @@ while map[actualPos[0]][actualPos[1]] != 'x':
     
     print('value: ', map[actualPos[0]][actualPos[1]])
     print('pos: ', actualPos)
+

@@ -161,6 +161,6 @@ for i in range(len(rode)):
     coords =rode[i]
     x = coords[0]
     y = coords[1]
-    map[x][y] =  'c'
+    map[x][y] =  8
 
 print(map,'map')
