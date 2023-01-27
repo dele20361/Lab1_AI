@@ -1,7 +1,6 @@
 import numpy as np 
 from inspect import stack
 from cv2 import findContours
-from PIL import Image
 #import pandas as pd
 
 map = [['4',1,0,0,1],
@@ -67,11 +66,11 @@ def findFronteirs ( actualNode, fronteirs, visited ):
     ogX = actualNode[0]
     ogY  = actualNode[1]
 
-    # Left
+    # Right
     X = ogX
-    Y = ogY - 1
+    Y = ogY + 1
     if (X,Y) not in visited:
-        pushFronteirs(fronteirs, X, Y, 'left')
+        pushFronteirs(fronteirs, X, Y, 'right')
 
     # Up
     X = ogX - 1 
@@ -79,11 +78,11 @@ def findFronteirs ( actualNode, fronteirs, visited ):
     if (X,Y) not in visited:
         pushFronteirs(fronteirs, X, Y, 'up')
 
-    # Right
+    # Left
     X = ogX
-    Y = ogY + 1
+    Y = ogY - 1
     if (X,Y) not in visited:
-        pushFronteirs(fronteirs, X, Y, 'right')
+        pushFronteirs(fronteirs, X, Y, 'left')
 
     # Down
     X = ogX + 1
@@ -110,7 +109,11 @@ def invert (map):
             rode.append(actualPos)
     return rode
 
-
+def convert_to_int(map):
+    for i in range(len(map)):
+        for j in range(len(map[i])):
+            val =  map[i][j] = int(map[i][j])
+    return val
 
 startPosition = find_in_list_of_list(map, '4')
 visited = []
@@ -132,7 +135,7 @@ while map[actualPos[0]][actualPos[1]] != '5':
     #print('value: ', map[actualPos[0]][actualPos[1]])
     #print('pos: ', actualPos)
 print('path', path1)
-# print('invert: ', path2)
+print('invert: ',path2)
 
 for i in path1:
     for j in path2:
@@ -142,22 +145,14 @@ for i in path1:
 
 #Change values of the original matrix 
 for i in range(len(path)):
-    coords = path[i]
+    coords =path[i]
     x = coords[0]
     y = coords[1]
     map[x][y] = 8
 
-<<<<<<< Updated upstream
+convert_to_int(map)
+
 for i in map:
-    print(i)
-# print('path', path)
-=======
-for i in map: 
-    print(i)
+    print (i)
+
 print('path', path)
-
-nparray = np.array(map)
-print(nparray)
-im = Image.fromarray
-
->>>>>>> Stashed changes
