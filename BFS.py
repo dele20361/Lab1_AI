@@ -2,11 +2,11 @@
 #from cv2 import findContours
 #import pandas as pd
 
-map = [['*',1,0,0,1],
+map = [['4',1,0,0,1],
         [1,1,0,0,1],
         [0,1,1,1,0],
         [1,1,1,1,1],
-        [0,1,1,1,'x']]
+        [0,1,1,1,'5']]
 
 def find_in_list_of_list( mylist, char ):
     """
@@ -65,11 +65,11 @@ def findFronteirs ( actualNode, fronteirs, visited ):
     ogX = actualNode[0]
     ogY  = actualNode[1]
 
-    # Left
+    # right
     X = ogX
-    Y = ogY - 1
+    Y = ogY + 1
     if (X,Y) not in visited:
-        pushFronteirs(fronteirs, X, Y, 'left')
+        pushFronteirs(fronteirs, X, Y, 'right')
 
     # Up
     X = ogX - 1 
@@ -77,11 +77,11 @@ def findFronteirs ( actualNode, fronteirs, visited ):
     if (X,Y) not in visited:
         pushFronteirs(fronteirs, X, Y, 'up')
 
-    # Right
+    # left
     X = ogX
-    Y = ogY + 1
+    Y = ogY - 1
     if (X,Y) not in visited:
-        pushFronteirs(fronteirs, X, Y, 'right')
+        pushFronteirs(fronteirs, X, Y, 'left')
 
     # Down
     X = ogX + 1
@@ -90,20 +90,66 @@ def findFronteirs ( actualNode, fronteirs, visited ):
         pushFronteirs(fronteirs, X, Y, 'down')
 
     return fronteirs
-        
 
-startPosition = find_in_list_of_list(map, '*')
+def invert (map):
+    startPosition = find_in_list_of_list(map, '5')
+    visited = []
+    fronteirs = []
+    rode = []
+    i=0
+
+    actualPos = startPosition
+
+    while map[actualPos[0]][actualPos[1]] != '4':
+        BreadthFistSearch(map, actualPos, visited, fronteirs)
+        if len(fronteirs) > 0:
+            actualPos = fronteirs.pop()
+
+            rode.append(actualPos)
+    return rode  
+
+def convert_to_int(map):
+    for i in range(len(map)):
+        for j in range(len(map[i])):
+            val =  map[i][j] = int(map[i][j])
+    return val
+
+startPosition = find_in_list_of_list(map, '4')
 visited = []
 fronteirs = []
+path =[]
+path1 = []
+path2 = invert(map)
+
 i = 0
 
 actualPos = startPosition
 
-while map[actualPos[0]][actualPos[1]] != 'x':
+while map[actualPos[0]][actualPos[1]] != '5':
     BreadthFistSearch(map, actualPos, visited, fronteirs)
     if len(fronteirs) > 0:
         actualPos = fronteirs.pop(0)
+    path1.append(actualPos)
     
-    print('value: ', map[actualPos[0]][actualPos[1]])
-    print('pos: ', actualPos)
+    #print('value: ', map[actualPos[0]][actualPos[1]])
+    #print('pos: ', actualPos)
+
+for i in path1:
+    for j in path2:
+        if i==j:
+            path.append(j)
+
+for i in range(len(path)):
+    coords =path[i]
+    x = coords[0]
+    y = coords[1]
+    map[x][y] = 8
+
+convert_to_int(map)
+print(path,'path')
+
+for i in map: print (i)
+    
+
+
 
