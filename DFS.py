@@ -1,5 +1,4 @@
 import numpy as np 
-from inspect import stack
 from cv2 import findContours
 
 from Algorithms import Algorithms
