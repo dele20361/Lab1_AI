@@ -4,7 +4,7 @@
 
 from Algorithms import Algorithms
 
-class AlgorithmBFS():
+class AlgorithmBFS(Algorithms):
 
     def __init__(self, map):
         self.map = map
