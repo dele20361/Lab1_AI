@@ -81,16 +81,19 @@ def heuristics (map,actualNode):
     Function that is used to determin the heuristics acording to the actual 
     position vs the final position 
     '''
-    x1 = actualNode[1]    
+    end = find_in_list_of_list(map, '5')
+    x1 = end[1]    
     y1 = actualNode[0]
 
     x2 = actualNode[1]
-    y2 = actualNode[0]
+    y2 = end[0]
+    
+    x = x2 - x1
+    y = y2 - y1
 
-    return min(())
-
-import numpy as np 
-
+    h = (x + y) -1 * min(x,y)
+    #print(h,'h')
+    return h
 
 def AStar( map, actualPos, visited, fronteirs,rode ):
     '''
