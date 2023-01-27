@@ -1,5 +1,6 @@
 from BFS import AlgorithmBFS
 from DFS import AlgorithmDFS
+from AStarEuclidian import EuclidianAStar
 import Algorithms
 
 mapa = [['4',1,0,0,1],
@@ -16,3 +17,6 @@ dfs = AlgorithmDFS(mapa)
 mapDFS = dfs.main()
 print(mapDFS)
 
+euclidianA = EuclidianAStar(mapa)
+mapEuclidianA = euclidianA.main()
+print(mapEuclidianA)
