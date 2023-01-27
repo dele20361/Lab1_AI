@@ -1,176 +1,170 @@
+from cv2 import Algorithm
 import numpy as np 
 
-map = [['4',1,0,0,1],
-        [1,1,0,0,1],
-        [0,1,1,1,0],
-        [1,1,1,1,1],
-        [0,1,1,1,'5']]
+class EuclidianAStar(Algorithm):
 
-def find_in_list_of_list(mylist, char):
-    '''
-    Function that is used to get the index acording to an especific
-    element
-        Recovered from: Stack Overflow 
-    '''
-    for sub_list in mylist:
-        if char in sub_list:
-            ubicar = mylist.index(sub_list), sub_list.index(char)
-            return (ubicar)
-    raise ValueError("'{char}' is not in list".format(char = char))
+    def __init__(self, map):
+        self.map = map
 
-def pushFronteirs ( stack, X, Y, direc ):
-    """
-        Función para verificar que los índex se encuentren dentro de los límites
-        del tamaño del array.
-        Parámetros:
-            stack: Fronteras
-            X: Número de lista
-            Y: Posición en lista de lista
-        Returns:
-            stack
-    """
-    limit = len(map)
-    if ( X > -1 and X < limit ) and ( Y > -1 and Y < limit ):
-        if (X,Y) not in stack:
-            if map[X][Y] != 0:
-                stack.append((X,Y))
+    def find_in_list_of_list(self, mylist, char):
+        '''
+        Function that is used to get the index acording to an especific
+        element
+            Recovered from: Stack Overflow 
+        '''
+        for sub_list in mylist:
+            if char in sub_list:
+                ubicar = mylist.index(sub_list), sub_list.index(char)
+                return (ubicar)
+        raise ValueError("'{char}' is not in list".format(char = char))
 
-    return stack
+    def pushFronteirs ( self, stack, X, Y, direc ):
+        """
+            Función para verificar que los índex se encuentren dentro de los límites
+            del tamaño del array.
+            Parámetros:
+                stack: Fronteras
+                X: Número de lista
+                Y: Posición en lista de lista
+            Returns:
+                stack
+        """
+        limit = len(self.map)
+        if ( X > -1 and X < limit ) and ( Y > -1 and Y < limit ):
+            if (X,Y) not in stack:
+                if self.map[X][Y] != 0:
+                    stack.append((X,Y))
 
-def findFronteirs ( actualNode, fronteirs, visited ):
-    '''
-        Para ver que nodos son 1 a su al rededor siempre tomando.
-        Parámetros:
-            actualNode: Nodo visitado
-            visited: Nodos visitados
-            fronteirs
-        Returns:
-            fronteirs actualizada
-    '''
-    ogX = actualNode[0]
-    ogY  = actualNode[1]
+        return stack
 
-    # Left
-    X = ogX
-    Y = ogY - 1
-    if (X,Y) not in visited:
-        pushFronteirs(fronteirs, X, Y, 'left')
+    def findFronteirs ( self, actualNode, fronteirs, visited ):
+        '''
+            Para ver que nodos son 1 a su al rededor siempre tomando.
+            Parámetros:
+                actualNode: Nodo visitado
+                visited: Nodos visitados
+                fronteirs
+            Returns:
+                fronteirs actualizada
+        '''
+        ogX = actualNode[0]
+        ogY  = actualNode[1]
 
-    # Up
-    X = ogX - 1 
-    Y = ogY
-    if (X,Y) not in visited:
-        pushFronteirs(fronteirs, X, Y, 'up')
+        # Left
+        X = ogX
+        Y = ogY - 1
+        if (X,Y) not in visited:
+            EuclidianAStar.pushFronteirs(self, fronteirs, X, Y, 'left')
 
-    # Right
-    X = ogX
-    Y = ogY + 1
-    if (X,Y) not in visited:
-        pushFronteirs(fronteirs, X, Y, 'right')
+        # Up
+        X = ogX - 1 
+        Y = ogY
+        if (X,Y) not in visited:
+            EuclidianAStar.pushFronteirs(self, fronteirs, X, Y, 'up')
 
-    # Down
-    X = ogX + 1
-    Y = ogY
-    if (X,Y) not in visited:
-        pushFronteirs(fronteirs, X, Y, 'down')
+        # Right
+        X = ogX
+        Y = ogY + 1
+        if (X,Y) not in visited:
+            EuclidianAStar.pushFronteirs(self, fronteirs, X, Y, 'right')
 
-    return fronteirs
+        # Down
+        X = ogX + 1
+        Y = ogY
+        if (X,Y) not in visited:
+            EuclidianAStar.pushFronteirs(self, fronteirs, X, Y, 'down')
 
-def heuristics (map,actual):
-    '''
-    Function that is used to determin the heuristics acording to the actual 
-    position vs the final position 
-    '''
-    end = find_in_list_of_list(map,'5')
+        return fronteirs
 
-    #Position of the near 1 
-    x1 = actual[0]
-    y1 = actual[1]
+    def heuristics (self, map,actual):
+        '''
+        Funcrion that is used to determin the heuristics acording to the actual 
+        position vs the final position 
+        '''
+        end = EuclidianAStar.find_in_list_of_list(self, self.map,'5')
 
-    #Position of the final symbol  
-    x2 = end[0]
-    y2 = end[1]
+        #Position of the near 1 
+        x1 = actual[0]
+        y1 = actual[1]
 
-    #Heuristics calculation 
-    x = x2 - x1
-    y = y2 - y1
-    
-    h = x + y 
-    H = round(np.sqrt(h),2) 
+        #Position of the final symbol  
+        x2 = end[0]
+        y2 = end[1]
 
-    return H
+        #Heuristics calculation 
+        x = x2 - x1
+        y = y2 - y1
+        
+        h = x + y 
+        H = round(np.sqrt(h),2) 
 
+        return H
 
-def AStar( map, actualPos, visited, fronteirs,rode ):
-    '''
-        Función para algoritmo Star * Search.
-        Parámetros:
-            map: Array con mapa
-            actualPos: posición (X, Y)
-            visited: Array con los nodos visitados
-            fronteirs: Array con los nodos "frontera"
-            rode: Camino a tomar 
-    '''
-    temp =[]
-    #print( 'actualPos: ', actualPos)
+    def AStar( self, map, actualPos, visited, fronteirs,rode ):
+        '''
+            Función para algoritmo Star * Search.
+            Parámetros:
+                map: Array con mapa
+                actualPos: posición (X, Y)
+                visited: Array con los nodos visitados
+                fronteirs: Array con los nodos "frontera"
+                rode: Camino a tomar 
+        '''
+        temp =[]
+        #print( 'actualPos: ', actualPos)
 
-    visited.append(actualPos)
-    #print( 'visited: ', visited)
+        visited.append(actualPos)
+        #print( 'visited: ', visited)
 
-    findFronteirs(actualPos, fronteirs, visited)
-    #print('fronteirs: ',fronteirs)
-    
-    for i in range(len(fronteirs)):
-        NextPos = fronteirs[i]
-        Calc = heuristics(map,NextPos)
-        temp.append(Calc)
+        EuclidianAStar.findFronteirs(self, actualPos, fronteirs, visited)
+        #print('fronteirs: ',fronteirs)
+        
+        for i in range(len(fronteirs)):
+            NextPos = fronteirs[i]
+            Calc = EuclidianAStar.heuristics(self, self.map, NextPos)
+            temp.append(Calc)
 
-    # Gets the value of the smaller heuristic
-    minVal = np.min(temp)
+        # Gets the value of the smaller heuristic
+        minVal = np.min(temp)
 
-    # Finds the frontier based on the heuristic
-    indexMV = temp.index(minVal)
-    node = fronteirs[indexMV]
+        # Finds the frontier based on the heuristic
+        indexMV = temp.index(minVal)
+        node = fronteirs[indexMV]
 
-    #Checks if a node is already in the path and if not it append it 
-    if node not in rode:
-        rode.append(node)
+        #Checks if a node is already in the path and if not it append it 
+        if node not in rode:
+            rode.append(node)
 
-    return None
+        return None
 
-def convert_to_int(map):
-    for i in range(len(map)):
-        for j in range(len(map[i])):
-            val =  map[i][j] = int(map[i][j])
-    return val
+    def convert_to_int(self, map):
+        for i in range(len(self.map)):
+            for j in range(len(self.map[i])):
+                val =  self.map[i][j] = int(self.map[i][j])
+        return val
 
+    def main(self):
 
-visited = []
-fronteirs = []
-rode = []
+        visited = []
+        fronteirs = []
+        rode = []
 
-startPosition = find_in_list_of_list(map, '4')
+        startPosition = EuclidianAStar.find_in_list_of_list(self, self.map, '4')
 
-actualPos = startPosition
+        actualPos = startPosition
 
-while map[actualPos[0]][actualPos[1]] != '5':
-    AStar(map, actualPos, visited, fronteirs,rode)
-    if len(fronteirs) > 0:
-        actualPos = fronteirs.pop()
+        while self.map[actualPos[0]][actualPos[1]] != '5':
+            EuclidianAStar.AStar(self, self.map, actualPos, visited, fronteirs,rode)
+            if len(fronteirs) > 0:
+                actualPos = fronteirs.pop()
 
-    #print('finalPos: ', actualPos)
-    #print('value: ', map[actualPos[0]][actualPos[1]])
-print(rode, 'camino' )
+        #Change values of the original matrix 
+        for i in range(len(rode)):
+            coords =rode[i]
+            x = coords[0]
+            y = coords[1]
+            self.map[x][y] =  8
+            
+        EuclidianAStar.convert_to_int(self, self.map)
 
-#Change values of the original matrix 
-for i in range(len(rode)):
-    coords =rode[i]
-    x = coords[0]
-    y = coords[1]
-    map[x][y] =  8
-    
-convert_to_int(map)
-
-for i in map:
-    print(i)
-
+        return self.map
