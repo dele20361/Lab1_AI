@@ -1,13 +1,14 @@
 import numpy as np 
 from inspect import stack
 from cv2 import findContours
+from PIL import Image
 #import pandas as pd
 
-map = [['*',1,0,0,1],
+map = [['4',1,0,0,1],
         [1,1,0,0,1],
         [0,1,1,1,0],
         [1,1,1,1,1],
-        [0,1,1,1,'x']]
+        [0,1,1,1,'5']]
 
 def find_in_list_of_list( mylist, char ):
     """
@@ -93,7 +94,7 @@ def findFronteirs ( actualNode, fronteirs, visited ):
     return fronteirs
 
 def invert (map):
-    startPosition = find_in_list_of_list(map, 'x')
+    startPosition = find_in_list_of_list(map, '5')
     visited = []
     fronteirs = []
     rode = []
@@ -101,7 +102,7 @@ def invert (map):
 
     actualPos = startPosition
 
-    while map[actualPos[0]][actualPos[1]] != '*':
+    while map[actualPos[0]][actualPos[1]] != '4':
         DepthFistSearch(map, actualPos, visited, fronteirs)
         if len(fronteirs) > 0:
             actualPos = fronteirs.pop()
@@ -111,7 +112,7 @@ def invert (map):
 
 
 
-startPosition = find_in_list_of_list(map, '*')
+startPosition = find_in_list_of_list(map, '4')
 visited = []
 fronteirs = []
 path=[]
@@ -121,7 +122,7 @@ i=0
 
 actualPos = startPosition
 
-while map[actualPos[0]][actualPos[1]] != 'x':
+while map[actualPos[0]][actualPos[1]] != '5':
     DepthFistSearch(map, actualPos, visited, fronteirs)
     if len(fronteirs) > 0:
         actualPos = fronteirs.pop()
@@ -144,8 +145,19 @@ for i in range(len(path)):
     coords = path[i]
     x = coords[0]
     y = coords[1]
-    map[x][y] = 'c'
+    map[x][y] = 8
 
+<<<<<<< Updated upstream
 for i in map:
     print(i)
 # print('path', path)
+=======
+for i in map: 
+    print(i)
+print('path', path)
+
+nparray = np.array(map)
+print(nparray)
+im = Image.fromarray
+
+>>>>>>> Stashed changes
