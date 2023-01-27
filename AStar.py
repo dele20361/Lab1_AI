@@ -1,10 +1,10 @@
 import numpy as np 
 
-map = [['*',1,0,0,1],
+map = [['4',1,0,0,1],
         [1,1,0,0,1],
         [0,1,1,1,0],
         [1,1,1,1,1],
-        [0,1,1,1,'x']]
+        [0,1,1,1,'5']]
 
 def find_in_list_of_list(mylist, char):
     '''
@@ -81,7 +81,7 @@ def heuristics (map,actual):
     Funcrion that is used to determin the heuristics acording to the actual 
     position vs the final position 
     '''
-    end = find_in_list_of_list(map,'x')
+    end = find_in_list_of_list(map,'5')
 
     #Position of the near 1 
     x1 = actual[0]
@@ -137,17 +137,22 @@ def AStar( map, actualPos, visited, fronteirs,rode ):
 
     return None
 
+def convert_to_int(map):
+    for i in range(len(map)):
+        for j in range(len(map[i])):
+            val =  map[i][j] = int(map[i][j])
+    return val
 
 
 visited = []
 fronteirs = []
 rode = []
 
-startPosition = find_in_list_of_list(map, '*')
+startPosition = find_in_list_of_list(map, '4')
 
 actualPos = startPosition
 
-while map[actualPos[0]][actualPos[1]] != 'x':
+while map[actualPos[0]][actualPos[1]] != '5':
     AStar(map, actualPos, visited, fronteirs,rode)
     if len(fronteirs) > 0:
         actualPos = fronteirs.pop()
@@ -162,5 +167,9 @@ for i in range(len(rode)):
     x = coords[0]
     y = coords[1]
     map[x][y] =  8
+    
+convert_to_int(map)
 
-print(map,'map')
+for i in map:
+    print(i)
+
