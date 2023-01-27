@@ -2,154 +2,148 @@
 #from cv2 import findContours
 #import pandas as pd
 
-map = [['4',1,0,0,1],
-        [1,1,0,0,1],
-        [0,1,1,1,0],
-        [1,1,1,1,1],
-        [0,1,1,1,'5']]
+from Algorithms import Algorithms
 
-def find_in_list_of_list( mylist, char ):
-    """
-        Tomado de: Stack Overflow
-    """
-    for sub_list in mylist:
-        if char in sub_list:
-            return (mylist.index(sub_list), sub_list.index(char))
-    raise ValueError("'{char}' is not in list".format(char = char))
+class AlgorithmBFS():
 
-def BreadthFistSearch( map, actualPos, visited, fronteirs ):
-    '''
-        Función para algoritmo Breadth First Search.
-        Parámetros:
-            map: Array con mapa
-            actualPos: posición (X, Y)
-            visited: Array con los nodos visitados
-            fronteirs: Array con los nodos "frontera"
-        Returns:
-            map con el camino marcado.
-    '''
-    visited.append(actualPos)
-    findFronteirs(actualPos, fronteirs, visited)
+    def __init__(self, map):
+        self.map = map
 
-    return map
+    def find_in_list_of_list( self, mylist, char ):
+        """
+            Tomado de: Stack Overflow
+        """
+        for sub_list in mylist:
+            if char in sub_list:
+                return (mylist.index(sub_list), sub_list.index(char))
+        raise ValueError("'{char}' is not in list".format(char = char))
 
-def pushFronteirs ( stack, X, Y, direc ):
-    """
-        Función para verificar que los índex se encuentren dentro de los límites
-        del tamaño del array.
-        Parámetros:
-            stack: Fronteras
-            X: Número de lista
-            Y: Posición en lista de lista
-        Returns:
-            stack
-    """
-    limit = len(map)
-    if ( X > -1 and X < limit ) and ( Y > -1 and Y < limit ):
-        if (X,Y) not in stack:
-            if map[X][Y] != 0:
-                stack.append((X,Y))
+    def BreadthFistSearch( self, map, actualPos, visited, fronteirs ):
+        '''
+            Función para algoritmo Breadth First Search.
+            Parámetros:
+                map: Array con mapa
+                actualPos: posición (X, Y)
+                visited: Array con los nodos visitados
+                fronteirs: Array con los nodos "frontera"
+            Returns:
+                map con el camino marcado.
+        '''
+        visited.append(actualPos)
+        AlgorithmBFS.findFronteirs(self, actualPos, fronteirs, visited)
 
-    return stack
+        return self.map
 
-def findFronteirs ( actualNode, fronteirs, visited ):
-    '''
-        Para ver que nodos son 1 a su al rededor siempre tomando.
-        Parámetros:
-            actualNode: Nodo visitado
-            visited: Nodos visitados
-            fronteirs
-        Returns:
-            fronteirs actualizada
-    '''
-    ogX = actualNode[0]
-    ogY  = actualNode[1]
+    def pushFronteirs ( self, stack, X, Y, direc ):
+        """
+            Función para verificar que los índex se encuentren dentro de los límites
+            del tamaño del array.
+            Parámetros:
+                stack: Fronteras
+                X: Número de lista
+                Y: Posición en lista de lista
+            Returns:
+                stack
+        """
+        limit = len(self.map)
+        if ( X > -1 and X < limit ) and ( Y > -1 and Y < limit ):
+            if (X,Y) not in stack:
+                if self.map[X][Y] != 0:
+                    stack.append((X,Y))
 
-    # right
-    X = ogX
-    Y = ogY + 1
-    if (X,Y) not in visited:
-        pushFronteirs(fronteirs, X, Y, 'right')
+        return stack
 
-    # Up
-    X = ogX - 1 
-    Y = ogY
-    if (X,Y) not in visited:
-        pushFronteirs(fronteirs, X, Y, 'up')
+    def findFronteirs ( self, actualNode, fronteirs, visited ):
+        '''
+            Para ver que nodos son 1 a su al rededor siempre tomando.
+            Parámetros:
+                actualNode: Nodo visitado
+                visited: Nodos visitados
+                fronteirs
+            Returns:
+                fronteirs actualizada
+        '''
+        ogX = actualNode[0]
+        ogY  = actualNode[1]
 
-    # left
-    X = ogX
-    Y = ogY - 1
-    if (X,Y) not in visited:
-        pushFronteirs(fronteirs, X, Y, 'left')
+        # Left
+        X = ogX
+        Y = ogY - 1
+        if (X,Y) not in visited:
+            AlgorithmBFS.pushFronteirs(self, fronteirs, X, Y, 'left')
 
-    # Down
-    X = ogX + 1
-    Y = ogY
-    if (X,Y) not in visited:
-        pushFronteirs(fronteirs, X, Y, 'down')
+        # Up
+        X = ogX - 1 
+        Y = ogY
+        if (X,Y) not in visited:
+            AlgorithmBFS.pushFronteirs(self, fronteirs, X, Y, 'up')
 
-    return fronteirs
+        # Right
+        X = ogX
+        Y = ogY + 1
+        if (X,Y) not in visited:
+            AlgorithmBFS.pushFronteirs(self, fronteirs, X, Y, 'right')
 
-def invert (map):
-    startPosition = find_in_list_of_list(map, '5')
-    visited = []
-    fronteirs = []
-    rode = []
-    i=0
+        # Down
+        X = ogX + 1
+        Y = ogY
+        if (X,Y) not in visited:
+            AlgorithmBFS.pushFronteirs(self, fronteirs, X, Y, 'down')
 
-    actualPos = startPosition
+        return fronteirs
 
-    while map[actualPos[0]][actualPos[1]] != '4':
-        BreadthFistSearch(map, actualPos, visited, fronteirs)
-        if len(fronteirs) > 0:
-            actualPos = fronteirs.pop()
+    def invert (self, map):
+        startPosition = AlgorithmBFS.find_in_list_of_list(self, self.map, '5')
+        visited = []
+        fronteirs = []
+        rode = []
+        i=0
 
-            rode.append(actualPos)
-    return rode  
+        actualPos = startPosition
 
-def convert_to_int(map):
-    for i in range(len(map)):
-        for j in range(len(map[i])):
-            val =  map[i][j] = int(map[i][j])
-    return val
+        while self.map[actualPos[0]][actualPos[1]] != '4':
+            AlgorithmBFS.BreadthFistSearch(self, self.map, actualPos, visited, fronteirs)
+            if len(fronteirs) > 0:
+                actualPos = fronteirs.pop()
 
-startPosition = find_in_list_of_list(map, '4')
-visited = []
-fronteirs = []
-path =[]
-path1 = []
-path2 = invert(map)
+                rode.append(actualPos)
+        return rode  
 
-i = 0
+    def convert_to_int(self, map):
+        for i in range(len(self.map)):
+            for j in range(len(self.map[i])):
+                val =  map[i][j] = int(self.map[i][j])
+        return val
+            
+    def main( self ):
+        startPosition = AlgorithmBFS.find_in_list_of_list(self, self.map, '4')
+        visited = []
+        fronteirs = []
+        path =[]
+        path1 = []
+        path2 = AlgorithmBFS.invert(self, self.map)
 
-actualPos = startPosition
+        i = 0
 
-while map[actualPos[0]][actualPos[1]] != '5':
-    BreadthFistSearch(map, actualPos, visited, fronteirs)
-    if len(fronteirs) > 0:
-        actualPos = fronteirs.pop(0)
-    path1.append(actualPos)
-    
-    #print('value: ', map[actualPos[0]][actualPos[1]])
-    #print('pos: ', actualPos)
+        actualPos = startPosition
 
-for i in path1:
-    for j in path2:
-        if i==j:
-            path.append(j)
+        while self.map[actualPos[0]][actualPos[1]] != '5':
+            AlgorithmBFS.BreadthFistSearch(self, self.map, actualPos, visited, fronteirs)
+            if len(fronteirs) > 0:
+                actualPos = fronteirs.pop(0)
+            path1.append(actualPos)
 
-for i in range(len(path)):
-    coords =path[i]
-    x = coords[0]
-    y = coords[1]
-    map[x][y] = 8
+        for i in path1:
+            for j in path2:
+                if i==j:
+                    path.append(j)
 
-convert_to_int(map)
-print(path,'path')
+        for i in range(len(path)):
+            coords =path[i]
+            x = coords[0]
+            y = coords[1]
+            self.map[x][y] = 8
 
-for i in map: print (i)
-    
+        AlgorithmBFS.convert_to_int(self, self.map)
 
-
-
+        return self.map
