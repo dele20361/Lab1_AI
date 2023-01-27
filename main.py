@@ -8,4 +8,6 @@ mapa = [['4',1,0,0,1],
         [0,1,1,1,'5']]
 
 bfs = AlgorithmBFS(mapa)
-print(bfs.main())
+map = (bfs.main())
+for i in map:
+    print(i)

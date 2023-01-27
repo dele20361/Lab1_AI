@@ -66,11 +66,11 @@ class AlgorithmBFS(Algorithms):
         ogX = actualNode[0]
         ogY  = actualNode[1]
 
-        # Left
+        # Right
         X = ogX
-        Y = ogY - 1
+        Y = ogY + 1
         if (X,Y) not in visited:
-            AlgorithmBFS.pushFronteirs(self, fronteirs, X, Y, 'left')
+            AlgorithmBFS.pushFronteirs(self, fronteirs, X, Y, 'right')
 
         # Up
         X = ogX - 1 
@@ -78,11 +78,11 @@ class AlgorithmBFS(Algorithms):
         if (X,Y) not in visited:
             AlgorithmBFS.pushFronteirs(self, fronteirs, X, Y, 'up')
 
-        # Right
+        # Left
         X = ogX
-        Y = ogY + 1
+        Y = ogY - 1
         if (X,Y) not in visited:
-            AlgorithmBFS.pushFronteirs(self, fronteirs, X, Y, 'right')
+            AlgorithmBFS.pushFronteirs(self, fronteirs, X, Y, 'left')
 
         # Down
         X = ogX + 1
